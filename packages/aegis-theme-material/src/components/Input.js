@@ -22,7 +22,7 @@ export const head = html`
 		left: 0;
 		color: rgba(0, 0, 0, .42);
 		transform-origin: left;
-		transition: all 0.3s ease;
+		transition: 0.3s ease;
 		pointer-events: none;
 	}
 	fieldset.material > input:focus ~ label {
@@ -31,8 +31,7 @@ export const head = html`
 
 	fieldset.material > input:focus ~ label,
 	fieldset.material > input:valid ~ label {
-		top: 0;
-		transform: scale(0.75);
+		transform: scale(0.75) translateY(-18px);
 	}
 
 	fieldset.material > input {
@@ -49,25 +48,26 @@ export const head = html`
 
 	fieldset.material > div {
 		width: 100%;
-		height: 1px;
+		height: 2px;
 	}
 
 	fieldset.material > div:before,
 	fieldset.material > div:after {
 		content: "";
 		position: absolute;
-		width: 100%;
-		height: 1px;
+		bottom: 0;
 		transition: .3s cubic-bezier(.4,0,.2,1);
+		width: 100%;
 	}
 
 	fieldset.material > div:before {
-		z-index: 0;
-		background-color: rgba(0,0,0,.42);
+		height: 1px;
+		background-color: black;
+		opacity: 0.42;
 	}
 
 	fieldset.material > div:after {
-		z-index: 1;
+		height: 2px;
 		transform-origin: center center 0;
 		background-color: var(--mainColor);
 		transform: scaleX(0);
@@ -77,12 +77,8 @@ export const head = html`
 		transform: scaleX(1);
 	}
 
-	input:focus ~ div:before {
-		background-color: none;
-	}
-
-	fieldset:hover > div:before {
-		background-color: rgba(0,0,0,.87);
+	fieldset:hover > input:not(:focus) ~ div:before {
+		opacity: 0.87
 	}
 </style>
 `;
