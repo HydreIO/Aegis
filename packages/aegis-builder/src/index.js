@@ -1,32 +1,36 @@
 import Aegis from '@hydre.io/aegis';
 import posthtml from 'posthtml';
-import components from './posthtml-components';
 import htmlnano from 'htmlnano';
-import module from '@hydre.io/aegis-auth-password';
-import theme from '@hydre.io/aegis-theme-material';
+import components from './posthtml-components';
+import postcss from 'posthtml-postcss'
+import autoprefixer from 'autoprefixer'
 
-void (async function() {
+import module from '@hydre.io/aegis-auth-password';
+
+(async function() {
 	const aegis = new Aegis();
 	module(aegis);
-	theme(aegis);
+	const theme = await import('@hydre.io/aegis-theme-material');
+	theme.default(aegis);
 
-	const templates = [...aegis.strategies.values()]
-		.map(({ template }) => template())
-		.join('');
+	for (const { template } of aegis.strategies.values()) {
+		const page = theme.boilerplate(template(), {
+			logo: 'https://avatars3.githubusercontent.com/u/40317854',
+			color: '#4CAF50'
+		});
 
-	const page = `
-<html>
-	<head></head>
-	<body>${templates}</body>
-</html>
-	`;
+		const result = await posthtml([
+			components(aegis.components),
+			postcss([
+				autoprefixer()
+			], {
+				from: undefined
+			}),
+			htmlnano({
+				collapseWhitespace: 'all'
+			})
+		]).process(page);
 
-	const result = await posthtml([
-		components(aegis.components),
-		htmlnano({
-			collapseWhitespace: 'all'
-		})
-	]).process(page);
-
-	console.log(result.html);
+		console.log(result.html);
+	}
 })();

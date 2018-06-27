@@ -10,7 +10,9 @@
     "@hydre.io/aegis": "^0.0.1",
     "@hydre.io/aegis-auth-password": "^0.0.1",
     "@hydre.io/aegis-theme-material": "^0.0.1",
-    "posthtml": "^0.11.3"
+    "autoprefixer": "^8.6.4",
+    "posthtml": "^0.11.3",
+    "posthtml-postcss": "^0.2.6"
   },
   "author": "Hydre.io",
   "license": "MIT"
