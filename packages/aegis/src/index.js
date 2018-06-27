@@ -14,7 +14,7 @@ export default class Aegis {
 		this.strategies.set(name, { template, passport });
 	}
 
-	registerComponent(tag, fn, head) {
-		this.components.set(tag, { fn, head });
+	registerComponent(tag, fn, { head = '', body = '' } = {}) {
+		this.components.set(tag, { fn, head, body });
 	}
 }

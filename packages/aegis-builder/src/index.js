@@ -2,8 +2,8 @@ import Aegis from '@hydre.io/aegis';
 import posthtml from 'posthtml';
 import htmlnano from 'htmlnano';
 import components from './posthtml-components';
-import postcss from 'posthtml-postcss'
-import autoprefixer from 'autoprefixer'
+import postcss from 'posthtml-postcss';
+import autoprefixer from 'autoprefixer';
 
 import module from '@hydre.io/aegis-auth-password';
 
