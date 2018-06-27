@@ -1,4 +1,9 @@
+#!/usr/bin/env node
+
 import Aegis from '@hydre.io/aegis';
+
+import { join, resolve, dirname } from 'path';
+
 import posthtml from 'posthtml';
 import htmlnano from 'htmlnano';
 import components from './posthtml-components';
@@ -7,23 +12,52 @@ import autoprefixer from 'autoprefixer';
 
 import module from '@hydre.io/aegis-auth-password';
 
+const [configName = 'config.json'] = process.argv.slice(2);
+
+if (configName === '--help') {
+	console.log(
+		`${process.argv[1]} [config]
+
+Options:
+\t--help\tShow help
+`
+	);
+	process.exit(0);
+}
+
 (async function() {
+	const configPath = resolve(process.cwd(), configName);
+	const {
+		strategies,
+		theme: themeName,
+		deploy: deployName,
+		settings: {
+			theme: themeSettings,
+			strategies: strategiesSettings = {},
+			deploy: deploySettings
+		} = {}
+	} = await import(configPath);
+
 	const aegis = new Aegis();
-	module(aegis);
-	const theme = await import('@hydre.io/aegis-theme-material');
-	theme.default(aegis);
+	const nodeModules = join(dirname(configPath), 'node_modules');
 
-	for (const { template } of aegis.strategies.values()) {
-		const page = theme.boilerplate(template(), {
-			logo: 'https://avatars3.githubusercontent.com/u/40317854',
-			color: '#4CAF50'
-		});
+	if (strategies)
+		strategies.forEach(name => aegis.loadModule(resolve(nodeModules, name)));
 
-		const result = await posthtml([
+	const theme = await aegis.loadModule(resolve(nodeModules, themeName));
+	const deployer = await aegis.loadModule(resolve(nodeModules, deployName));
+
+	const deploy = await deployer.deploy(deploySettings, dirname(configPath));
+
+	await Promise.all([...aegis.strategies.entries()].map(async ([name, { template }]) => {
+		const page = theme.boilerplate(
+			template(strategiesSettings[name]),
+			themeSettings
+		);
+
+		const { html } = await posthtml([
 			components(aegis.components),
-			postcss([
-				autoprefixer()
-			], {
+			postcss([autoprefixer()], {
 				from: undefined
 			}),
 			htmlnano({
@@ -31,6 +65,6 @@ import module from '@hydre.io/aegis-auth-password';
 			})
 		]).process(page);
 
-		console.log(result.html);
-	}
+		await deploy(`${name}.html`, html)
+	}))
 })();

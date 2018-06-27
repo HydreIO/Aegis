@@ -1,0 +1,17 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "aegis-build",
+    "start": "npm run build"
+  },
+  "dependencies": {
+    "@hydre.io/aegis-auth-password": "^0.0.1",
+    "@hydre.io/aegis-theme-material": "^0.0.1",
+    "@hydre.io/aegis-deploy-dir": "^0.0.1"
+  },
+  "devDependencies": {
+    "@hydre.io/aegis-builder": "^0.0.1"
+  }
+}

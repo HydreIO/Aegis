@@ -1,0 +1,16 @@
+{
+	"strategies": [
+		"@hydre.io/aegis-auth-password"
+	],
+	"theme": "@hydre.io/aegis-theme-material",
+	"deploy": "@hydre.io/aegis-deploy-dir",
+	"settings": {
+		"theme": {
+			"color": "#4CAF50",
+			"logo": "https://avatars3.githubusercontent.com/u/40317854"			
+		},
+		"deploy": {
+			"dir": "dist"
+		}
+	}
+}

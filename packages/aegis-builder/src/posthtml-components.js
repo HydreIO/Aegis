@@ -1,4 +1,4 @@
-import parser from "posthtml-parser"
+import parser from 'posthtml-parser';
 
 function createElement(tag, attrs, ...content) {
 	return { tag, attrs, content };
@@ -25,9 +25,8 @@ export default function(components) {
 			});
 		}
 
-
-		pushToDom('head', [...heads].map(e => e.trim()).map(parser))
-		pushToDom('body', [...bodies].map(e => e.trim()).map(parser))
+		pushToDom('head', [...heads].map(e => e.trim()).map(parser));
+		pushToDom('body', [...bodies].map(e => e.trim()).map(parser));
 
 		cb(null, tree);
 	};
