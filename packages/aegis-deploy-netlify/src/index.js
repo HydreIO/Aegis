@@ -45,7 +45,7 @@ export async function deploy({ site, token = process.env.NETLIFY_TOKEN }) {
 				hashs[`/${name}`] = sha1(content);
 			}
 
-			const { id } = await fetch(
+			const { id, deploy_ssl_url } = await fetch(
 				`https://api.netlify.com/api/v1/sites/${site}.netlify.com/deploys`,
 				{
 					method: 'POST',
@@ -74,6 +74,8 @@ export async function deploy({ site, token = process.env.NETLIFY_TOKEN }) {
 					);
 				})
 			);
+
+			console.log('Deployed at', deploy_ssl_url);
 		}
 	};
 }

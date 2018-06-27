@@ -48,7 +48,7 @@ Options:
 	const deploy = await deployer.deploy(deploySettings, dirname(configPath));
 
 	await Promise.all(
-		[...aegis.strategies.entries()].map(async ([name, { template }]) => {
+		[...aegis.strategies.entries()].map(async ([name, { template }], i) => {
 			const page = theme.boilerplate(
 				template(strategiesSettings[name]),
 				themeSettings
@@ -64,7 +64,7 @@ Options:
 				})
 			]).process(page);
 
-			await deploy.add(`${name}.html`, html);
+			await deploy.add(`${i === 0 ? 'index' : name}.html`, html);
 		})
 	);
 
