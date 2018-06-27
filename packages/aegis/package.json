@@ -1,0 +1,16 @@
+{
+  "name": "@hydre.io/aegis",
+  "version": "0.0.1",
+  "description": "The Shield that protect us (Auth Service)",
+  "main": "lib",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/HydreIO/Aegis/tree/master/packages/aegis",
+  "author": "Hydre.io",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HydreIO/Aegis/issues"
+  },
+  "homepage": "https://github.com/HydreIO/Aegis#readme"
+}

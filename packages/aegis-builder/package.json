@@ -1,0 +1,17 @@
+{
+  "name": "@hydre.io/aegis-builder",
+  "version": "0.0.1",
+  "description": "Aegis template builder",
+  "main": "lib",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@hydre.io/aegis": "^0.0.1",
+    "@hydre.io/aegis-auth-password": "^0.0.1",
+    "@hydre.io/aegis-theme-material": "^0.0.1",
+    "posthtml": "^0.11.3"
+  },
+  "author": "Hydre.io",
+  "license": "MIT"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@hydre.io/aegis-auth-password",
+  "version": "0.0.1",
+  "description": "Aegis password auth strategy",
+  "main": "lib",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/HydreIO/Aegis/tree/master/packages/aegis-auth-password",
+  "author": "Hydre.io",
+  "license": "MIT",
+  "dependencies": {
+    "html-template-tag": "^2.0.0",
+    "passport-local": "^1.0.0"
+  }
+}
