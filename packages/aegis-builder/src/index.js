@@ -47,24 +47,26 @@ Options:
 
 	const deploy = await deployer.deploy(deploySettings, dirname(configPath));
 
-	await Promise.all([...aegis.strategies.entries()].map(async ([name, { template }]) => {
-		const page = theme.boilerplate(
-			template(strategiesSettings[name]),
-			themeSettings
-		);
+	await Promise.all(
+		[...aegis.strategies.entries()].map(async ([name, { template }]) => {
+			const page = theme.boilerplate(
+				template(strategiesSettings[name]),
+				themeSettings
+			);
 
-		const { html } = await posthtml([
-			components(aegis.components),
-			postcss([autoprefixer()], {
-				from: undefined
-			}),
-			htmlnano({
-				collapseWhitespace: 'all'
-			})
-		]).process(page);
+			const { html } = await posthtml([
+				components(aegis.components),
+				postcss([autoprefixer()], {
+					from: undefined
+				}),
+				htmlnano({
+					collapseWhitespace: 'all'
+				})
+			]).process(page);
 
-		await deploy.add(`${name}.html`, html)
-	}))
+			await deploy.add(`${name}.html`, html);
+		})
+	);
 
-	await deploy.end()
+	await deploy.end();
 })();
