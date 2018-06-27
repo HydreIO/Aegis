@@ -12,5 +12,9 @@ export async function deploy({ dir } = {}, root) {
 	const dirPath = resolve(root, dir)
 	await mkdirp(dirPath)
 
-	return (path, content) => writeFileAysnc(join(dirPath, path), content, "utf-8")
+	return {
+		add(path, content) {
+			return writeFileAysnc(join(dirPath, path), content, "utf-8")
+		}
+	}
 }

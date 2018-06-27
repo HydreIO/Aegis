@@ -10,8 +10,6 @@ import components from './posthtml-components';
 import postcss from 'posthtml-postcss';
 import autoprefixer from 'autoprefixer';
 
-import module from '@hydre.io/aegis-auth-password';
-
 const [configName = 'config.json'] = process.argv.slice(2);
 
 if (configName === '--help') {
@@ -65,6 +63,8 @@ Options:
 			})
 		]).process(page);
 
-		await deploy(`${name}.html`, html)
+		await deploy.add(`${name}.html`, html)
 	}))
+
+	await deploy.end()
 })();

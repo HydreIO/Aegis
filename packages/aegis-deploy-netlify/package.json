@@ -1,0 +1,14 @@
+{
+  "name": "@hydre.io/aegis-deploy-netlify",
+  "version": "0.0.1",
+  "description": "Aegis netlify deployer",
+  "main": "lib",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hydre.io",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.1.2"
+  }
+}
