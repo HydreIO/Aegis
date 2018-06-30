@@ -1,29 +1,10 @@
-#!/usr/bin/env node
-
-import Aegis from '@hydre.io/aegis';
-
 import posthtml from 'posthtml';
 import htmlnano from 'htmlnano';
 import components from './posthtml-components';
 import postcss from 'posthtml-postcss';
 import autoprefixer from 'autoprefixer';
 
-const [configName = 'config.json'] = process.argv.slice(2);
-
-if (configName === '--help') {
-	console.log(
-		`${process.argv[1]} [config]
-
-Options:
-\t--help\tShow help
-`
-	);
-	process.exit(0);
-}
-
-(async function() {
-	const aegis = await Aegis.fromConfig(configName);
-
+export default async function build(aegis) {
 	await Promise.all(
 		Array.from(aegis.strategies).map(async ([name, { template }], i) => {
 			const page = aegis.theme(template);
@@ -43,4 +24,4 @@ Options:
 	);
 
 	await aegis.deploy.end();
-})();
+}

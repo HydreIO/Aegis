@@ -6,11 +6,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "aegis": "lib/cli.js"
+  },
   "repository": "https://github.com/HydreIO/Aegis/tree/master/packages/aegis",
   "author": "Hydre.io",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/HydreIO/Aegis/issues"
   },
-  "homepage": "https://github.com/HydreIO/Aegis#readme"
+  "homepage": "https://github.com/HydreIO/Aegis#readme",
+  "dependencies": {
+    "autoprefixer": "^8.6.4",
+    "chalk": "^2.4.1",
+    "htmlnano": "^0.1.9",
+    "posthtml": "^0.11.3",
+    "posthtml-postcss": "^0.2.6",
+    "sywac": "^1.2.0"
+  }
 }

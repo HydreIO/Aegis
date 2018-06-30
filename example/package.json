@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "aegis-build",
+    "build": "aegis build",
     "start": "npm run build"
   },
   "dependencies": {
@@ -13,6 +13,6 @@
     "@hydre.io/aegis-deploy-netlify": "^0.0.1"
   },
   "devDependencies": {
-    "@hydre.io/aegis-builder": "^0.0.1"
+    "@hydre.io/aegis": "^0.0.1"
   }
 }

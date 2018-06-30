@@ -22,7 +22,7 @@ export default class Aegis {
 		this.components.set(tag, { fn, head, body });
 	}
 
-	static async fromConfig(path, { loadTheme = true, loadDeploy = true }) {
+	static async fromConfig(path, { loadTheme = true, loadDeploy = true } = {}) {
 		const fullPath = resolve(process.cwd(), path);
 		const aegis = new Aegis(join(dirname(fullPath), 'node_modules'));
 		const {
