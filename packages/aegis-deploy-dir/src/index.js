@@ -1,15 +1,13 @@
 import { writeFile } from 'fs';
-import { join, resolve } from 'path';
+import { join, resolve, dirname } from 'path';
 import { promisify } from 'util';
 
 import mkdirp from 'mkdirp-promise';
 
 const writeFileAysnc = promisify(writeFile);
 
-export default aegis => {};
-
-export async function deploy({ dir } = {}, root) {
-	const dirPath = resolve(root, dir);
+export default async (aegis, { dir } = {}) => {
+	const dirPath = resolve(dirname(aegis.importRoot), dir);
 	await mkdirp(dirPath);
 
 	return {
@@ -18,4 +16,4 @@ export async function deploy({ dir } = {}, root) {
 		},
 		end() {}
 	};
-}
+};

@@ -7,9 +7,7 @@ function sha1(value) {
 	return generator.digest('hex');
 }
 
-export default aegis => {};
-
-export async function deploy({ site, token = process.env.NETLIFY_TOKEN }) {
+export default async (aegis, { site, token = process.env.NETLIFY_TOKEN }) => {
 	const { status } = await fetch(
 		`https://api.netlify.com/api/v1/sites/${site}.netlify.com`,
 		{
@@ -78,4 +76,4 @@ export async function deploy({ site, token = process.env.NETLIFY_TOKEN }) {
 			console.log('Deployed at', deploy_ssl_url);
 		}
 	};
-}
+};

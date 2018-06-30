@@ -2,8 +2,6 @@
 
 import Aegis from '@hydre.io/aegis';
 
-import { join, resolve, dirname } from 'path';
-
 import posthtml from 'posthtml';
 import htmlnano from 'htmlnano';
 import components from './posthtml-components';
@@ -24,35 +22,11 @@ Options:
 }
 
 (async function() {
-	const configPath = resolve(process.cwd(), configName);
-	const {
-		strategies,
-		theme: themeName,
-		deploy: deployName,
-		settings: {
-			theme: themeSettings,
-			strategies: strategiesSettings = {},
-			deploy: deploySettings
-		} = {}
-	} = await import(configPath);
-
-	const aegis = new Aegis();
-	const nodeModules = join(dirname(configPath), 'node_modules');
-
-	if (strategies)
-		strategies.forEach(name => aegis.loadModule(resolve(nodeModules, name)));
-
-	const theme = await aegis.loadModule(resolve(nodeModules, themeName));
-	const deployer = await aegis.loadModule(resolve(nodeModules, deployName));
-
-	const deploy = await deployer.deploy(deploySettings, dirname(configPath));
+	const aegis = await Aegis.fromConfig(configName);
 
 	await Promise.all(
-		[...aegis.strategies.entries()].map(async ([name, { template }], i) => {
-			const page = theme.boilerplate(
-				template(strategiesSettings[name]),
-				themeSettings
-			);
+		Array.from(aegis.strategies).map(async ([name, { template }], i) => {
+			const page = aegis.theme(template);
 
 			const { html } = await posthtml([
 				components(aegis.components),
@@ -64,9 +38,9 @@ Options:
 				})
 			]).process(page);
 
-			await deploy.add(`${i === 0 ? 'index' : name}.html`, html);
+			await aegis.deploy.add(`${i === 0 ? 'index' : name}.html`, html);
 		})
 	);
 
-	await deploy.end();
+	await aegis.deploy.end();
 })();

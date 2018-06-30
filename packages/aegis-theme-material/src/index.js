@@ -1,14 +1,16 @@
 import html from 'html-template-tag';
 import components from './components';
 
-export default aegis => {
+export default (aegis, settings) => {
 	for (const [name, { render, head, body }] of Object.entries(components)) {
 		aegis.registerComponent(name, render, { head, body });
 	}
+
+	return boilerplate(settings);
 };
 
-export function boilerplate(template, { logo, color = 'red' }) {
-	return html`
+function boilerplate({ logo, color = 'red' }) {
+	return template => html`
 		<!DOCTYPE html>
 		<html>
 			<head>
