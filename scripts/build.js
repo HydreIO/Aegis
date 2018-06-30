@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 const { transformFile } = require("@babel/core");
 const { promisify } = require("util");
 const globby = require('globby');
@@ -18,7 +19,7 @@ globby("*/src/**/*.js", {
 	cwd
 }).then(files => Promise.all(
 	files.map(async f => {
-		console.log(f, '->', swapSrcWithLib(f))
+		console.log(chalk`{cyan ${f}} {magenta →} {green ${swapSrcWithLib(f)}}`)
 		const { code } = await transformFileAsync(join(cwd, f), {
 			configFile: join(__dirname, "..", ".babelrc")
 		})
