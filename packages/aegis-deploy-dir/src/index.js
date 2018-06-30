@@ -15,6 +15,7 @@ export async function deploy({ dir } = {}, root) {
 	return {
 		add(path, content) {
 			return writeFileAysnc(join(dirPath, path), content, 'utf-8');
-		}
+		},
+		end() {}
 	};
 }
