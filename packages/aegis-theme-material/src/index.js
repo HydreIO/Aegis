@@ -62,6 +62,9 @@ function boilerplate({ logo, color = 'red' }) {
 					<div class="logo">
 						<img src="${logo}">
 					</div>
+					<noscript>
+						<iframe src="/flash"></iframe>
+					</noscript>
 					$${template}
 				</div>
 			</body>

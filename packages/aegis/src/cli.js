@@ -5,12 +5,19 @@ import chalk from 'chalk';
 
 import Aegis from '.';
 import build from './build';
+import serve from './serve';
 
 sywac
 	.command('build [config=config.json]', {
 		desc: 'Build and deploy aegis web part',
 		async run({ config }) {
 			await build(await Aegis.fromConfig(config));
+		}
+	})
+	.command('serve [config=config.json]', {
+		desc: 'serve aegis server part',
+		async run({ config }) {
+			await serve(await Aegis.fromConfig(config));
 		}
 	})
 	.help()

@@ -18,10 +18,16 @@
   "homepage": "https://github.com/HydreIO/Aegis#readme",
   "dependencies": {
     "autoprefixer": "^8.6.4",
+    "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
+    "connect": "^3.6.6",
+    "cookies": "^0.7.1",
     "htmlnano": "^0.1.9",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
     "posthtml": "^0.11.3",
     "posthtml-postcss": "^0.2.6",
+    "serve-static": "^1.13.2",
     "sywac": "^1.2.0"
   }
 }

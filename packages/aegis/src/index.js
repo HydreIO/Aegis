@@ -14,8 +14,8 @@ export default class Aegis {
 		return (module.default || module)(this, settings);
 	}
 
-	registerStrategy(name, { template, passport }) {
-		this.strategies.set(name, { template, passport });
+	registerStrategy(name, { template, passport, routes }) {
+		this.strategies.set(name, { template, passport, routes });
 	}
 
 	registerComponent(tag, fn, { head = '', body = '' } = {}) {
@@ -23,7 +23,7 @@ export default class Aegis {
 	}
 
 	static async fromConfig(path, { loadTheme = true, loadDeploy = true } = {}) {
-		const fullPath = resolve(process.cwd(), path);
+		const fullPath = resolve(path);
 		const aegis = new Aegis(join(dirname(fullPath), 'node_modules'));
 		const {
 			strategies,

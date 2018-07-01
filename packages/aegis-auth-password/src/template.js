@@ -1,7 +1,7 @@
 import html from 'html-template-tag';
 
 export default html`
-<form action="#/login" method="post">
+<form action="/password" method="post">
 	<Input type="text" id="username" name="username" label="Username" required></Input>
 	<Input type="password" id="password" name="password" label="Password" required></Input>
 	<div style="text-align: right">
