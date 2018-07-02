@@ -10,7 +10,8 @@
     "@hydre.io/aegis-auth-password": "^0.0.1",
     "@hydre.io/aegis-theme-material": "^0.0.1",
     "@hydre.io/aegis-deploy-dir": "^0.0.1",
-    "@hydre.io/aegis-deploy-netlify": "^0.0.1"
+    "@hydre.io/aegis-deploy-netlify": "^0.0.1",
+    "@hydre.io/aegis-storage-mongodb": "^0.0.1"
   },
   "devDependencies": {
     "@hydre.io/aegis": "^0.0.1"

@@ -4,6 +4,7 @@
 	],
 	"theme": "@hydre.io/aegis-theme-material",
 	"deploy": "@hydre.io/aegis-deploy-dir",
+	"storage": "@hydre.io/aegis-storage-mongodb",
 	"settings": {
 		"theme": {
 			"color": "#4CAF50",
@@ -12,6 +13,9 @@
 		"deploy": {
 			"site": "aegis",
 			"dir": "dist"
+		},
+		"storage": {
+			"db": "aegis"
 		}
 	}
 }

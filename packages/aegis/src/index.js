@@ -22,15 +22,20 @@ export default class Aegis {
 		this.components.set(tag, { fn, head, body });
 	}
 
-	static async fromConfig(path, { loadTheme = true, loadDeploy = true } = {}) {
+	static async fromConfig(
+		path,
+		{ loadTheme = true, loadDeploy = true, loadStorage = true } = {}
+	) {
 		const fullPath = resolve(path);
 		const aegis = new Aegis(join(dirname(fullPath), 'node_modules'));
 		const {
 			strategies,
 			theme: themeName,
+			storage: storageName,
 			deploy: deployName,
 			settings: {
 				theme: themeSettings,
+				storage: storageSettings,
 				strategies: strategiesSettings = {},
 				deploy: deploySettings
 			} = {}
@@ -39,6 +44,9 @@ export default class Aegis {
 		if (strategies)
 			for (const name of strategies)
 				await aegis.loadModule(name, strategiesSettings[name]);
+
+		if (loadStorage)
+			aegis.storage = await aegis.loadModule(storageName, storageSettings);
 
 		if (loadDeploy)
 			aegis.deploy = await aegis.loadModule(deployName, deploySettings);

@@ -20,7 +20,7 @@ export default async function serve(aegis, port = 3000) {
 	const strategies = [];
 
 	for (const [name, { passport: strategy, routes }] of aegis.strategies) {
-		console.log('Loading', name, '...');
+		console.log('Loading', name, 'with strategy', strategy.name, '...');
 		passport.use(strategy);
 		for (const [method, path] of routes) {
 			strategies.push([method, path, strategy.name]);
@@ -31,8 +31,10 @@ export default async function serve(aegis, port = 3000) {
 		const { pathname } = parse(req.url);
 
 		// User without javascript
-		if (pathname === '/flash')
+		if (pathname === '/flash') {
+			res.cookies.set('flash');
 			return res.end(req.cookies.get('flash'), 'text/html');
+		}
 
 		const strategy = strategies.find(
 			([method, path]) => method === req.method && path === pathname
@@ -40,14 +42,19 @@ export default async function serve(aegis, port = 3000) {
 
 		if (strategy) {
 			const [, , name] = strategy;
-			console.log(name);
+			console.log('Using strategy', name);
 
 			passport.authenticate(name, (err, user, info, status) => {
 				if (err) return next(err);
 				else {
-					res.cookies.set('flash', 'lol');
-					console.log(err, user, info, status);
-					res.end();
+					if (user === false) {
+						info && res.cookies.set('flash', JSON.stringify(info));
+						res.writeHead(301, { Location: '/' });
+						res.end();
+					} else {
+						console.log(err, user, info, status);
+						res.end();
+					}
 				}
 			})(req, res, next);
 		} else next();

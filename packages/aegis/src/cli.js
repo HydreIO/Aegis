@@ -11,13 +11,15 @@ sywac
 	.command('build [config=config.json]', {
 		desc: 'Build and deploy aegis web part',
 		async run({ config }) {
-			await build(await Aegis.fromConfig(config));
+			await build(await Aegis.fromConfig(config, { loadStorage: false }));
 		}
 	})
 	.command('serve [config=config.json]', {
 		desc: 'serve aegis server part',
 		async run({ config }) {
-			await serve(await Aegis.fromConfig(config));
+			await serve(
+				await Aegis.fromConfig(config, { loadTheme: false, loadDeploy: false })
+			);
 		}
 	})
 	.help()
