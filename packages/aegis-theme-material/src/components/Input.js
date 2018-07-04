@@ -2,7 +2,7 @@ import html from 'html-template-tag';
 
 export const render = (h, { attrs }) => (
 	<fieldset class="material">
-		<input {...attrs} label={undefined} />
+		<input {...attrs} label={undefined} placeholder=" " />
 		<label for={attrs.id}>{attrs.label}</label>
 		<div />
 	</fieldset>
@@ -30,7 +30,8 @@ export const head = html`
 	}
 
 	fieldset.material > input:focus ~ label,
-	fieldset.material > input:valid ~ label {
+	fieldset.material > input:valid ~ label,
+	fieldset.material > input:not(:placeholder-shown) ~ label {
 		transform: scale(0.75) translateY(-18px);
 	}
 

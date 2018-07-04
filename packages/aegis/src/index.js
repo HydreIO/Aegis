@@ -1,12 +1,35 @@
 import { join, resolve, dirname } from 'path';
 
 export default class Aegis {
-	constructor(importRoot) {
+	constructor(importRoot, signup) {
 		this.importRoot = importRoot;
+		this.signup = signup;
 		this.strategies = new Map();
 		this.components = new Map();
-		this.deployer = null;
+		this.signupSteps = new Map();
+		this.deploy = null;
+		this.storage = null;
 		this.theme = null;
+
+		// Defaults
+		this.registerSignupStep('username', 'Input', {
+			attrs: {
+				id: 'username',
+				label: 'User Name',
+				type: 'text',
+				required: true
+			}
+		});
+
+		const confirmSignup = Symbol('confirmSignup');
+
+		this.registerComponent(confirmSignup, (h, _, { Button }) => (
+			<div style="text-align: right">
+				<Button type="submit">SignUp</Button>
+			</div>
+		));
+
+		this.registerSignupStep('confirm', confirmSignup);
 	}
 
 	async loadModule(name, settings) {
@@ -22,12 +45,15 @@ export default class Aegis {
 		this.components.set(tag, { fn, head, body });
 	}
 
+	registerSignupStep(name, component, params = {}) {
+		this.signupSteps.set(name, { component, params });
+	}
+
 	static async fromConfig(
 		path,
 		{ loadTheme = true, loadDeploy = true, loadStorage = true } = {}
 	) {
 		const fullPath = resolve(path);
-		const aegis = new Aegis(join(dirname(fullPath), 'node_modules'));
 		const {
 			strategies,
 			theme: themeName,
@@ -38,8 +64,11 @@ export default class Aegis {
 				storage: storageSettings,
 				strategies: strategiesSettings = {},
 				deploy: deploySettings
-			} = {}
+			} = {},
+			signup
 		} = await import(fullPath);
+
+		const aegis = new Aegis(join(dirname(fullPath), 'node_modules'), signup);
 
 		if (strategies)
 			for (const name of strategies)

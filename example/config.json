@@ -16,6 +16,16 @@
 		},
 		"storage": {
 			"db": "aegis"
+		},
+		"strategies": {
+			"@hydre.io/aegis-auth-password": {
+				"confirm_password": true
+			}
 		}
-	}
+	},
+	"signup": [
+		"username",
+		"password",
+		"confirm"
+	]
 }
