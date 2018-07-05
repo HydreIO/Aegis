@@ -13,7 +13,7 @@ export default class Aegis {
 
 		// Defaults
 		this.registerSignupStep('username', {
-			template: `<Input id="username" label="User Name" type="text" required></Input>`,
+			template: `<Input id="username" name="username" type="text" required>Username</Input>`,
 			handle: ({ username }) => ({ username })
 		});
 

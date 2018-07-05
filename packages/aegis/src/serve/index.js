@@ -27,40 +27,60 @@ export default async function serve(aegis, port = 3000) {
 		}
 	}
 
+	const steps = aegis.signup.map(step => aegis.signupSteps.get(step));
+
 	app.use((req, res, next) => {
 		const { pathname } = parse(req.url);
 
 		// User without javascript
-		if (pathname === '/flash') {
-			res.cookies.set('flash');
-			return res.end(req.cookies.get('flash'), 'text/html');
+		switch (pathname) {
+			case '/flash':
+				res.cookies.set('flash');
+				res.end(req.cookies.get('flash'), 'text/html');
+				break;
+			case '/signup':
+				if (req.method === 'POST') {
+					Promise.all(steps.map(({ handle }) => handle(req.body)))
+						.then(results => results.reduce((c, v) => Object.assign(c, v), {}))
+						.then(result => aegis.storage.add(result))
+						.then(_ => {
+							res.writeHead(301, { Location: '/' });
+							res.end();
+						}, next);
+				} else next();
+				break;
+			default:
+				const strategy = strategies.find(
+					([method, path]) => method === req.method && path === pathname
+				);
+
+				if (strategy) {
+					const [, , name] = strategy;
+					console.log('Using strategy', name);
+
+					passport.authenticate(name, (err, user, info, status) => {
+						if (err) return next(err);
+						else {
+							if (user === false) {
+								info && res.cookies.set('flash', JSON.stringify(info));
+								res.writeHead(301, { Location: '/' });
+								res.end();
+							} else {
+								console.log(err, user, info, status);
+								res.end();
+							}
+						}
+					})(req, res, next);
+				} else next();
+				break;
 		}
-
-		const strategy = strategies.find(
-			([method, path]) => method === req.method && path === pathname
-		);
-
-		if (strategy) {
-			const [, , name] = strategy;
-			console.log('Using strategy', name);
-
-			passport.authenticate(name, (err, user, info, status) => {
-				if (err) return next(err);
-				else {
-					if (user === false) {
-						info && res.cookies.set('flash', JSON.stringify(info));
-						res.writeHead(301, { Location: '/' });
-						res.end();
-					} else {
-						console.log(err, user, info, status);
-						res.end();
-					}
-				}
-			})(req, res, next);
-		} else next();
 	});
 
-	app.use(serveStatic('dist'));
+	app.use(
+		serveStatic('dist', {
+			extensions: ['html']
+		})
+	);
 
 	const server = createServer(app);
 	server.listen(port, _ =>

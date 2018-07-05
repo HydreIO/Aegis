@@ -23,7 +23,7 @@ export default async function build(aegis) {
 	await Promise.all(
 		Array.from(aegis.strategies).map(
 			async ([name, { template, body, head }], i) => {
-				const html = buildFromTemplate(aegis, template, {
+				const html = await buildFromTemplate(aegis, template, {
 					bodies: new Set([body]),
 					heads: new Set([head])
 				});
@@ -38,7 +38,7 @@ export default async function build(aegis) {
 
 	const html = await buildFromTemplate(
 		aegis,
-		`<form action="/signup" method="POST">
+		`<form action="/signup" method="post">
 			${steps.map(({ template }) => template).join('')}
 		</form>`,
 		{

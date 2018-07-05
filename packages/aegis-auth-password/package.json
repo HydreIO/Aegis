@@ -10,6 +10,7 @@
   "author": "Hydre.io",
   "license": "MIT",
   "dependencies": {
+    "argon2": "^0.19.3",
     "html-template-tag": "^2.0.0",
     "passport-local": "^1.0.0"
   }

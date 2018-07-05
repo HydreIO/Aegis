@@ -1,9 +1,9 @@
 import html from 'html-template-tag';
 
-export const render = (h, { attrs }) => (
+export const render = (h, { attrs, content }) => (
 	<fieldset class="material">
-		<input {...attrs} label={undefined} placeholder=" " />
-		<label for={attrs.id}>{attrs.label}</label>
+		<input {...attrs} placeholder={content.toString()} />
+		<label for={attrs.id}>{content}</label>
 		<div />
 	</fieldset>
 );
@@ -16,6 +16,7 @@ export const head = html`
 		padding: 0;
 		margin-bottom: 16px;
 	}
+
 	fieldset.material > label {
 		position: absolute;  
 		top: 18px;
@@ -25,6 +26,11 @@ export const head = html`
 		transition: 0.3s ease;
 		pointer-events: none;
 	}
+
+	fieldset.material > input::placeholder {
+		color: transparent;
+	}
+
 	fieldset.material > input:focus ~ label {
 		color: var(--mainColor);
 	}

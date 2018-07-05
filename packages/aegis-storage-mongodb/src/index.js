@@ -11,13 +11,21 @@ export default async (
 	const db = await client.db(dbName);
 	const users = db.collection('users');
 
-	/*users.createIndex(
-		{ type: 1 },
+	users.createIndex(
+		{ email: 1 },
 		{
-			email: { locale: 'en', strength: 1 },
-			pseudo: { locale: 'en', strength: 1 }
+			collation: { locale: 'en', strength: 1 },
+			unique: true
 		}
-	);*/
+	);
+
+	users.createIndex(
+		{ username: 1 },
+		{
+			collation: { locale: 'en', strength: 1 },
+			unique: true
+		}
+	);
 
 	return {
 		findByUsername(username, { fields, strict = true } = {}) {
@@ -28,13 +36,16 @@ export default async (
 							email: username
 						},
 						{
-							pseudo: username
+							username
 						}
 					]
 				})
 				.collation({ locale: 'en', strength: 1 })
 				.limit(1)
 				.next();
+		},
+		add(user) {
+			return users.insertOne(user);
 		}
 	};
 };
