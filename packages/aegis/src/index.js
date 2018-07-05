@@ -12,24 +12,15 @@ export default class Aegis {
 		this.theme = null;
 
 		// Defaults
-		this.registerSignupStep('username', 'Input', {
-			attrs: {
-				id: 'username',
-				label: 'User Name',
-				type: 'text',
-				required: true
-			}
+		this.registerSignupStep('username', {
+			template: `<Input id="username" label="User Name" type="text" required></Input>`,
+			handle: ({ username }) => ({ username })
 		});
 
-		const confirmSignup = Symbol('confirmSignup');
-
-		this.registerComponent(confirmSignup, (h, _, { Button }) => (
-			<div style="text-align: right">
-				<Button type="submit">SignUp</Button>
-			</div>
-		));
-
-		this.registerSignupStep('confirm', confirmSignup);
+		this.registerSignupStep('confirm', {
+			template: `<div style="text-align: right"><Button type="submit">SignUp</Button></div>`,
+			handle: () => ({})
+		});
 	}
 
 	async loadModule(name, settings) {
@@ -37,16 +28,16 @@ export default class Aegis {
 		return (module.default || module)(this, settings);
 	}
 
-	registerStrategy(name, { template, passport, routes }) {
-		this.strategies.set(name, { template, passport, routes });
+	registerStrategy(name, { template, passport, routes, body = '', head = '' }) {
+		this.strategies.set(name, { template, passport, routes, body, head });
 	}
 
 	registerComponent(tag, fn, { head = '', body = '' } = {}) {
 		this.components.set(tag, { fn, head, body });
 	}
 
-	registerSignupStep(name, component, params = {}) {
-		this.signupSteps.set(name, { component, params });
+	registerSignupStep(name, { template, handle, body = '', head = '' }) {
+		this.signupSteps.set(name, { template, handle, body, head });
 	}
 
 	static async fromConfig(

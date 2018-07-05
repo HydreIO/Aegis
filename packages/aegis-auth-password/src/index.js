@@ -26,28 +26,15 @@ export default (aegis, { confirm_password: confirmPassword }) => {
 		template
 	});
 
-	const passwordSignup = Symbol('passwordSignup');
+	const extraStep = confirmPassword
+		? html`<Input id="confirm_password" label="Configrm Password" type="password" required></Input>`
+		: '';
 
-	aegis.registerComponent(
-		passwordSignup,
-		(h, _, { Input }) => {
-			const step = (
-				<Input id="password" label="Password" type="password" required />
-			);
-			if (confirmPassword)
-				return [
-					step,
-					<Input
-						id="confirm_password"
-						label="Configrm Password"
-						type="password"
-						required
-					/>
-				];
-			else return step;
-		},
-		{
-			body: html`
+	aegis.registerSignupStep('password', {
+		template: html`
+			<Input id="password" label="Password" type="password" required></Input>
+			$${extraStep}`,
+		body: html`
 			<script>
 				(function (){
 					var password = document.getElementById("password");
@@ -65,14 +52,10 @@ export default (aegis, { confirm_password: confirmPassword }) => {
 					password.addEventListener('change', validatePassword);
 					confirm_password.addEventListener('keyup', validatePassword);
 				})();
-			</script>
-		`
+			</script>`,
+		handle({ password, confirm_password }) {
+			if (confirmPassword && password === confirm_password) return { password };
+			else throw "Password Don't Match";
 		}
-	);
-
-	aegis.registerSignupStep(
-		'password',
-		passwordSignup,
-		({ password, confirm_password }) => password === confirm_password
-	);
+	});
 };

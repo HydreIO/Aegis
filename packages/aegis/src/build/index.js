@@ -21,39 +21,33 @@ async function buildFromTemplate(aegis, template, inject) {
 }
 export default async function build(aegis) {
 	await Promise.all(
-		Array.from(aegis.strategies).map(async ([name, { template }], i) => {
-			const html = buildFromTemplate(aegis, template);
-			await aegis.deploy.add(`${i === 0 ? 'index' : name}.html`, html);
-		})
+		Array.from(aegis.strategies).map(
+			async ([name, { template, body, head }], i) => {
+				const html = buildFromTemplate(aegis, template, {
+					bodies: new Set([body]),
+					heads: new Set([head])
+				});
+				await aegis.deploy.add(`${i === 0 ? 'index' : name}.html`, html);
+			}
+		)
 	);
 
-	// Collect deps
-	const inject = {};
+	const steps = aegis.signup.map(step => aegis.signupSteps.get(step));
+	const bodies = new Set(steps.map(({ body }) => body));
+	const heads = new Set(steps.map(({ head }) => head));
 
-	const { html } = await posthtml([
-		components(aegis.components, inject)
-	]).process(
+	const html = await buildFromTemplate(
+		aegis,
+		`<form action="/signup" method="POST">
+			${steps.map(({ template }) => template).join('')}
+		</form>`,
 		{
-			tag: 'form',
-			attrs: {
-				action: '/signup',
-				method: 'post'
-			},
-			content: aegis.signup.map(step => {
-				const { component, params } = aegis.signupSteps.get(step);
-
-				return {
-					...params,
-					tag: component
-				};
-			})
-		},
-		{ skipParse: true }
+			bodies,
+			heads
+		}
 	);
 
-	const page = await buildFromTemplate(aegis, html, inject);
-
-	await aegis.deploy.add('signup.html', page);
+	await aegis.deploy.add('signup.html', html);
 
 	await aegis.deploy.end();
 }
