@@ -9,6 +9,6 @@
   "author": "Hydre.io",
   "license": "MIT",
   "dependencies": {
-    "mongodb": "^3.1.0"
+    "mongodb": "^3.1.13"
   }
 }
